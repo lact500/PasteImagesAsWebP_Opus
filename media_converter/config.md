@@ -33,7 +33,7 @@
 * `enable_audio_conversion` - Enable/disable conversion of audio files to `opus`.
 * `ffmpeg_audio_args` - Extra [ffmpeg arguments](https://ffmpeg.org/ffmpeg.html) for audio.
     * `-b:a` - Audio bitrate. Default "64k".
-      [About opus bitrates](https://wiki.xiph.org/Opus_Recommended_Settings)
+      [About opus bitrates](https://wiki.xiph.org/Opus_Recommended_Settings).
 * `audio_extension` - Container (extension) for opus files ("opus" or "ogg").
 * `excluded_audio_exts` - Comma-separated list of extensions to skip for audio conversion.
 
