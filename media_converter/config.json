@@ -9,6 +9,7 @@
     "max_image_width": 800,
     "max_image_height": 600,
     "image_format": "webp",
+    "excluded_exts": "svg",
     "image_quality": 20,
     "show_settings": "toolbar",
     "drag_and_drop": true,
@@ -35,7 +36,6 @@
     "filename_pattern_num": 0,
     "tooltip_duration_seconds": 5,
     "preserve_original_filenames": true,
-    "excluded_exts": "svg",
     "bulk_convert_fields": [],
     "bulk_reconvert": false,
     "custom_name_field": "VocabKanji",
@@ -43,7 +43,7 @@
 
     "enable_audio_conversion": false,
     "ffmpeg_audio_args": [
-        "-b:a", "128k"
+        "-b:a", "96k"
     ],
     "audio_extension": "opus",
     "excluded_audio_exts": "mid"
