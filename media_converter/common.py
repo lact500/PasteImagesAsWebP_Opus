@@ -32,9 +32,12 @@ def find_convertible_audio(html: str, include_converted: bool = False) -> Iterab
         return
     filename: str
     for filename in re.findall(RE_AUDIO_HTML_TAG, html):
+
         if any(filename.endswith(ext) for ext in config.excluded_audio_exts):
             continue
-        yield filename
+
+        if include_converted or not filename.endswith(config.audio_extension):
+            yield filename
 
 def tooltip(msg: str, parent: Optional[QWidget] = None) -> None:
     from aqt.utils import tooltip as _tooltip
