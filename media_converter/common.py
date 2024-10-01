@@ -19,9 +19,11 @@ def find_convertible_images(html: str, include_converted: bool = False) -> Itera
         return
     filename: str
     for filename in re.findall(RE_IMAGE_HTML_TAG, html):
+
         # Check if the filename ends with any of the excluded extensions
-        if any(filename.endswith(ext) for ext in config.excluded_exts):
+        if any(filename.endswith(ext) for ext in config.excluded_image_exts):
             continue
+
         if include_converted or not filename.endswith(config.image_extension):
             yield filename
 
@@ -57,7 +59,6 @@ def has_local_file(mime: QMimeData) -> bool:
         if url.isLocalFile():
             return True
     return False
-
 
 def key_to_str(shortcut: str) -> str:
     return QKeySequence(shortcut).toString(QKeySequence.SequenceFormat.NativeText)
