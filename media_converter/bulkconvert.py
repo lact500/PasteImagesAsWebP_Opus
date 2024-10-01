@@ -116,8 +116,9 @@ class ConvertTask:
                 continue
             for filename in find_convertible_images(note_content, include_converted=config.bulk_reconvert):
                 to_convert[filename][note.id] = note
-            for filename in find_convertible_audio(note_content, include_converted=config.bulk_reconvert):
-                to_convert[filename][note.id] = note
+            if config.audio_conversion_enabled == 1:
+                for filename in find_convertible_audio(note_content, include_converted=config.bulk_reconvert):
+                    to_convert[filename][note.id] = note
 
         return to_convert
 
