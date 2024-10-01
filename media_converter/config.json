@@ -9,7 +9,7 @@
     "max_image_width": 800,
     "max_image_height": 600,
     "image_format": "webp",
-    "excluded_exts": "svg",
+    "excluded_image_exts": "svg",
     "image_quality": 20,
     "show_settings": "toolbar",
     "drag_and_drop": true,
@@ -43,7 +43,7 @@
 
     "enable_audio_conversion": false,
     "ffmpeg_audio_args": [
-        "-b:a", "96k"
+        "-b:a", "64k"
     ],
     "audio_extension": "opus",
     "excluded_audio_exts": "mid"
