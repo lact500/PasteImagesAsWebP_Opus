@@ -60,9 +60,9 @@ class MediaConverterConfig(AddonConfigManager):
         return self["convert_on_note_add"]
 
     @property
-    def excluded_exts(self) -> list[str]:
+    def excluded_image_exts(self) -> list[str]:
         # Split the string by commas and prepend a dot to each extension
-        return ['.' + ext for ext in self.get("excluded_exts", "").split(",")]
+        return ['.' + ext for ext in self.get("excluded_image_exts", "").split(",")]
 
     @property
     def audio_conversion_enabled(self) -> bool:
