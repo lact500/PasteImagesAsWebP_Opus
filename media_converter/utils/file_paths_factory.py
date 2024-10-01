@@ -64,9 +64,16 @@ class FilePathFactory(FileNamePatterns):
         self._editor = editor
 
     def make_unique_filepath(self, dest_dir: str, original_filename: Optional[str]) -> str:
+
+        extension = self._get_extension(original_filename)
         return ensure_unique(
-            os.path.join(dest_dir, self._make_filename_no_ext(original_filename) + config.image_extension)
+            os.path.join(dest_dir, self._make_filename_no_ext(original_filename) + extension)
         )
+
+    def _get_extension(self, filename: Optional[str]) -> str:
+        if filename and (os.path.splitext(filename)[1].lower() in config.COMMON_AUDIO_FORMATS):
+            return config.audio_extension
+        return config.image_extension
 
     @compatible_filename
     def _make_filename_no_ext(self, original_filename: Optional[str]) -> str:
