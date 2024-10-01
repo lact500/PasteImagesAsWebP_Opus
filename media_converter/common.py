@@ -12,15 +12,27 @@ from .config import config
 
 RE_IMAGE_HTML_TAG = re.compile(r'<img[^<>]*src="([^"]+)"[^<>]*>', flags=re.IGNORECASE)
 
+RE_AUDIO_HTML_TAG = re.compile(r'\[sound:([^\]]+)\]', flags=re.IGNORECASE)
 
 def find_convertible_images(html: str, include_converted: bool = False) -> Iterable[str]:
     if not (html and "<img" in html):
         return
     filename: str
     for filename in re.findall(RE_IMAGE_HTML_TAG, html):
+        # Check if the filename ends with any of the excluded extensions
+        if any(filename.endswith(ext) for ext in config.excluded_exts):
+            continue
         if include_converted or not filename.endswith(config.image_extension):
             yield filename
 
+def find_convertible_audio(html: str, include_converted: bool = False) -> Iterable[str]:
+    if not (html and "[sound:" in html):
+        return
+    filename: str
+    for filename in re.findall(RE_AUDIO_HTML_TAG, html):
+        if any(filename.endswith(ext) for ext in config.excluded_audio_exts):
+            continue
+        yield filename
 
 def tooltip(msg: str, parent: Optional[QWidget] = None) -> None:
     from aqt.utils import tooltip as _tooltip
