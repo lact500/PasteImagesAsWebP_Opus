@@ -59,5 +59,29 @@ class MediaConverterConfig(AddonConfigManager):
     def convert_on_note_add(self) -> bool:
         return self["convert_on_note_add"]
 
+    @property
+    def excluded_exts(self) -> list[str]:
+        # Split the string by commas and prepend a dot to each extension
+        return ['.' + ext for ext in self.get("excluded_exts", "").split(",")]
+
+    @property
+    def audio_conversion_enabled(self) -> bool:
+        return self["audio_conversion_enabled"]
+
+    @property
+    def audio_extension(self) -> str:
+        return f".{self["audio_extension"].lower()}"
+
+    @property
+    def ffmpeg_audio_args(self) -> list[str]:
+        return self.get("ffmpeg_audio_args")
+
+    @property
+    def excluded_audio_exts(self) -> list[str]:
+        return ['.' + ext for ext in self.get("excluded_audio_exts").split(",")]
+
+    @property
+    def COMMON_AUDIO_FORMATS(self) -> list[str]:
+        return f".{['.mp3', '.wav', '.ogg', '.flac', '.aac', '.m4a', '.aiff', '.amr', '.ape', '.mp2', '.oga', '.oma', '.opus']}"
 
 config = MediaConverterConfig()
