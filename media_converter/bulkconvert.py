@@ -16,7 +16,7 @@ from aqt.operations import CollectionOp, ResultWithChanges
 from aqt.qt import *
 from aqt.utils import restoreGeom, saveGeom, showInfo
 
-from .common import find_convertible_images, tooltip
+from .common import find_convertible_images, find_convertible_audio, tooltip
 from .config import config
 from .consts import ADDON_FULL_NAME
 from .gui import BulkConvertDialog
@@ -71,7 +71,10 @@ class ConvertTask:
         for progress_idx, filename in enumerate(self._to_convert):
             yield progress_idx
             try:
-                converted_filename = self._convert_stored_image(filename, self._first_referenced(filename))
+                if os.path.splitext(filename)[1].lower() in config.COMMON_AUDIO_FORMATS:
+                    converted_filename = self._convert_stored_audio(filename, self._first_referenced(filename))
+                else:
+                    converted_filename = self._convert_stored_image(filename, self._first_referenced(filename))
             except (OSError, RuntimeError, FileNotFoundError) as ex:
                 self._result.add_failed(filename, exception=ex)
             else:
@@ -109,9 +112,11 @@ class ConvertTask:
 
         for note in map(mw.col.get_note, note_ids):
             note_content = join_fields([note[field] for field in self._keys_to_update(note)])
-            if "<img" not in note_content:
+            if "<img" not in note_content and "[sound:" not in note_content:
                 continue
             for filename in find_convertible_images(note_content, include_converted=config.bulk_reconvert):
+                to_convert[filename][note.id] = note
+            for filename in find_convertible_audio(note_content, include_converted=config.bulk_reconvert):
                 to_convert[filename][note.id] = note
 
         return to_convert
@@ -119,6 +124,11 @@ class ConvertTask:
     def _convert_stored_image(self, filename: str, note: Note) -> str:
         conv = InternalFileConverter(self._browser.editor, note, filename)
         conv.convert_internal()
+        return conv.new_filename
+
+    def _convert_stored_audio(self, filename: str, note: Note) -> str:
+        conv = InternalFileConverter(self._browser.editor, note, filename)
+        conv.convert_internal_audio()
         return conv.new_filename
 
     def _update_notes_op(self, col: Collection) -> ResultWithChanges:
